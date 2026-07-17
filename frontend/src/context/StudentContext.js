@@ -10,9 +10,12 @@ export function StudentProvider({ children }) {
   const [classes, setClasses] = useState([]);
   const [leaderboardSummary, setLeaderboardSummary] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchProfile = useCallback(async () => {
     if (!token) return;
+    setIsLoading(true);
+    setError(null);
     try {
       const response = await axios.get(`${API_URL}/students/profile`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -20,18 +23,23 @@ export function StudentProvider({ children }) {
       setProfile(response.data);
     } catch (error) {
       console.error('Failed to fetch profile:', error);
+      setError(error.response?.data?.detail || 'Failed to load profile');
+    } finally {
+      setIsLoading(false);
     }
   }, [token]);
 
   const fetchClasses = useCallback(async () => {
     if (!token) return;
+    setError(null);
     try {
       const response = await axios.get(`${API_URL}/students/classes`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setClasses(response.data);
+      setClasses(response.data || []);
     } catch (error) {
       console.error('Failed to fetch classes:', error);
+      setError(error.response?.data?.detail || 'Failed to load classes');
     }
   }, [token]);
 
@@ -57,6 +65,7 @@ export function StudentProvider({ children }) {
 
   const joinClass = async (classCode) => {
     setIsLoading(true);
+    setError(null);
     try {
       const response = await axios.post(
         `${API_URL}/students/join-class`,
@@ -66,10 +75,9 @@ export function StudentProvider({ children }) {
       await fetchClasses();
       return { success: true, data: response.data };
     } catch (error) {
-      return {
-        success: false,
-        error: error.response?.data?.detail || 'Failed to join class'
-      };
+      const errorMsg = error.response?.data?.detail || 'Failed to join class';
+      setError(errorMsg);
+      return { success: false, error: errorMsg };
     } finally {
       setIsLoading(false);
     }
@@ -92,16 +100,20 @@ export function StudentProvider({ children }) {
     }
   };
 
+  const clearError = () => setError(null);
+
   const value = {
     profile,
     classes,
     leaderboardSummary,
     isLoading,
+    error,
     fetchProfile,
     fetchClasses,
     fetchLeaderboardSummary,
     joinClass,
-    updatePreferences
+    updatePreferences,
+    clearError
   };
 
   return (

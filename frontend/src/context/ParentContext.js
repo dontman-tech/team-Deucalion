@@ -13,9 +13,12 @@ export function ParentProvider({ children }) {
   const [childAssignments, setChildAssignments] = useState([]);
   const [childLeaderboard, setChildLeaderboard] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchDashboard = useCallback(async () => {
     if (!token) return;
+    setIsLoading(true);
+    setError(null);
     try {
       const response = await axios.get(`${API_URL}/parents/dashboard`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -28,6 +31,9 @@ export function ParentProvider({ children }) {
       }
     } catch (error) {
       console.error('Failed to fetch dashboard:', error);
+      setError(error.response?.data?.detail || 'Failed to load dashboard');
+    } finally {
+      setIsLoading(false);
     }
   }, [token, activeChildId]);
 
@@ -97,6 +103,7 @@ export function ParentProvider({ children }) {
 
   const addChild = async (childTrackingCode) => {
     setIsLoading(true);
+    setError(null);
     try {
       const response = await axios.post(
         `${API_URL}/parents/children/add`,
@@ -106,10 +113,9 @@ export function ParentProvider({ children }) {
       await fetchDashboard();
       return { success: true, data: response.data };
     } catch (error) {
-      return {
-        success: false,
-        error: error.response?.data?.detail || 'Failed to add child'
-      };
+      const errorMsg = error.response?.data?.detail || 'Failed to add child';
+      setError(errorMsg);
+      return { success: false, error: errorMsg };
     } finally {
       setIsLoading(false);
     }
@@ -119,6 +125,8 @@ export function ParentProvider({ children }) {
     setActiveChildId(childId);
   };
 
+  const clearError = () => setError(null);
+
   const value = {
     dashboard,
     activeChildId,
@@ -127,13 +135,15 @@ export function ParentProvider({ children }) {
     childAssignments,
     childLeaderboard,
     isLoading,
+    error,
     fetchDashboard,
     fetchChildDashboard,
     fetchChildProgress,
     fetchChildAssignments,
     fetchChildLeaderboard,
     addChild,
-    selectChild
+    selectChild,
+    clearError
   };
 
   return (

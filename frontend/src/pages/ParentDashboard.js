@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
 import { useParent } from '../context/ParentContext';
 import { useAuth } from '../context/AuthContext';
+import LoadingScreen from '../components/LoadingScreen';
 import './Dashboard.css';
 
 function ParentDashboard() {
-  const { dashboard, activeChildId, childDashboard, selectChild, addChild } = useParent();
+  const { dashboard, activeChildId, childDashboard, isLoading, error, clearError, selectChild, addChild } = useParent();
   const { user } = useAuth();
   const [showAddChild, setShowAddChild] = useState(false);
   const [newChildCode, setNewChildCode] = useState('');
-  const [error, setError] = useState('');
+  const [localError, setLocalError] = useState('');
+
+  if (isLoading && !dashboard) {
+    return <LoadingScreen message="Loading parent dashboard..." />;
+  }
 
   const handleAddChild = async (e) => {
     e.preventDefault();
-    setError('');
+    setLocalError('');
     const result = await addChild(newChildCode);
     if (result.success) {
       setNewChildCode('');
       setShowAddChild(false);
     } else {
-      setError(result.error);
+      setLocalError(result.error);
     }
   };
 
@@ -26,6 +31,13 @@ function ParentDashboard() {
 
   return (
     <div className="dashboard">
+      {(error || localError) && (
+        <div className="error-banner" onClick={() => { clearError(); setLocalError(''); }}>
+          <span>⚠️ {error || localError}</span>
+          <button className="dismiss-btn">×</button>
+        </div>
+      )}
+
       <div className="dashboard-header">
         <div className="welcome-section">
           <h1>Welcome, {user?.full_name || 'Parent'}!</h1>
@@ -151,7 +163,7 @@ function ParentDashboard() {
           <div className="modal">
             <h2>Add Child</h2>
             <p>Enter your child's Child Tracking Code (CTC) to link their account.</p>
-            {error && <div className="error-message">{error}</div>}
+            {localError && <div className="error-message">{localError}</div>}
             <form onSubmit={handleAddChild}>
               <div className="form-group">
                 <label>Child Tracking Code</label>

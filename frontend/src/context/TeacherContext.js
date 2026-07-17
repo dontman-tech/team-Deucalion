@@ -11,9 +11,12 @@ export function TeacherProvider({ children }) {
   const [assignments, setAssignments] = useState([]);
   const [dashboardSummary, setDashboardSummary] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchProfile = useCallback(async () => {
     if (!token) return;
+    setIsLoading(true);
+    setError(null);
     try {
       const response = await axios.get(`${API_URL}/teachers/profile`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -21,18 +24,23 @@ export function TeacherProvider({ children }) {
       setProfile(response.data);
     } catch (error) {
       console.error('Failed to fetch profile:', error);
+      setError(error.response?.data?.detail || 'Failed to load profile');
+    } finally {
+      setIsLoading(false);
     }
   }, [token]);
 
   const fetchClasses = useCallback(async () => {
     if (!token) return;
+    setError(null);
     try {
       const response = await axios.get(`${API_URL}/teachers/classes`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setClasses(response.data);
+      setClasses(response.data || []);
     } catch (error) {
       console.error('Failed to fetch classes:', error);
+      setError(error.response?.data?.detail || 'Failed to load classes');
     }
   }, [token]);
 
@@ -42,7 +50,7 @@ export function TeacherProvider({ children }) {
       const response = await axios.get(`${API_URL}/teachers/assignments`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setAssignments(response.data);
+      setAssignments(response.data || []);
     } catch (error) {
       console.error('Failed to fetch assignments:', error);
     }
@@ -71,6 +79,7 @@ export function TeacherProvider({ children }) {
 
   const createClass = async (classData) => {
     setIsLoading(true);
+    setError(null);
     try {
       const response = await axios.post(
         `${API_URL}/teachers/classes`,
@@ -80,10 +89,9 @@ export function TeacherProvider({ children }) {
       await fetchClasses();
       return { success: true, data: response.data };
     } catch (error) {
-      return {
-        success: false,
-        error: error.response?.data?.detail || 'Failed to create class'
-      };
+      const errorMsg = error.response?.data?.detail || 'Failed to create class';
+      setError(errorMsg);
+      return { success: false, error: errorMsg };
     } finally {
       setIsLoading(false);
     }
@@ -106,6 +114,7 @@ export function TeacherProvider({ children }) {
 
   const createAssignment = async (assignmentData) => {
     setIsLoading(true);
+    setError(null);
     try {
       const response = await axios.post(
         `${API_URL}/teachers/assignments`,
@@ -115,10 +124,9 @@ export function TeacherProvider({ children }) {
       await fetchAssignments();
       return { success: true, data: response.data };
     } catch (error) {
-      return {
-        success: false,
-        error: error.response?.data?.detail || 'Failed to create assignment'
-      };
+      const errorMsg = error.response?.data?.detail || 'Failed to create assignment';
+      setError(errorMsg);
+      return { success: false, error: errorMsg };
     } finally {
       setIsLoading(false);
     }
@@ -140,12 +148,15 @@ export function TeacherProvider({ children }) {
     }
   };
 
+  const clearError = () => setError(null);
+
   const value = {
     profile,
     classes,
     assignments,
     dashboardSummary,
     isLoading,
+    error,
     fetchProfile,
     fetchClasses,
     fetchAssignments,
@@ -153,7 +164,8 @@ export function TeacherProvider({ children }) {
     createClass,
     getClassStudents,
     createAssignment,
-    flagStudent
+    flagStudent,
+    clearError
   };
 
   return (

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../context/AuthContext';
+import LoadingScreen from '../components/LoadingScreen';
 import './Dashboard.css';
 
 const CAMEROON_REGIONS = [
@@ -38,6 +39,7 @@ function AdminDashboard() {
 
   const fetchData = async () => {
     setLoading(true);
+    setError('');
     try {
       const [statsRes, schoolsRes, teachersRes] = await Promise.all([
         axios.get(`${API_URL}/admin/stats`),
@@ -45,11 +47,11 @@ function AdminDashboard() {
         axios.get(`${API_URL}/admin/pending-teachers`)
       ]);
       setStats(statsRes.data);
-      setSchools(schoolsRes.data);
-      setPendingTeachers(teachersRes.data);
+      setSchools(schoolsRes.data || []);
+      setPendingTeachers(teachersRes.data || []);
     } catch (err) {
       console.error('Failed to fetch data:', err);
-      setError('Failed to load dashboard data');
+      setError(err.response?.data?.detail || 'Failed to load dashboard data');
     }
     setLoading(false);
   };
@@ -119,7 +121,7 @@ function AdminDashboard() {
   };
 
   if (loading) {
-    return <div className="dashboard-loading">Loading...</div>;
+    return <LoadingScreen message="Loading admin dashboard..." />;
   }
 
   return (
@@ -134,7 +136,12 @@ function AdminDashboard() {
         </div>
       </div>
 
-      {error && <div className="error-message">{error}</div>}
+      {error && (
+        <div className="error-banner">
+          <span>⚠️ {error}</span>
+          <button onClick={() => setError('')} className="dismiss-btn">×</button>
+        </div>
+      )}
 
       {/* Stats Cards */}
       <div className="stats-grid">

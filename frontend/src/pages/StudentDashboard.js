@@ -2,14 +2,26 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useStudent } from '../context/StudentContext';
 import { useAuth } from '../context/AuthContext';
+import LoadingScreen from '../components/LoadingScreen';
 import './Dashboard.css';
 
 function StudentDashboard() {
-  const { profile, classes, leaderboardSummary } = useStudent();
+  const { profile, classes, leaderboardSummary, isLoading, error, clearError } = useStudent();
   const { user } = useAuth();
+
+  if (isLoading && !profile) {
+    return <LoadingScreen message="Loading your dashboard..." />;
+  }
 
   return (
     <div className="dashboard">
+      {error && (
+        <div className="error-banner" onClick={clearError}>
+          <span>⚠️ {error}</span>
+          <button className="dismiss-btn">×</button>
+        </div>
+      )}
+
       <div className="dashboard-header">
         <div className="welcome-section">
           <h1>Welcome back, {user?.full_name || 'Student'}!</h1>
@@ -44,7 +56,11 @@ function StudentDashboard() {
         {/* My Classes */}
         <div className="card classes-card">
           <h2>My Classes</h2>
-          {classes.length === 0 ? (
+          {isLoading ? (
+            <div className="loading-inline">
+              <span className="spinner-small"></span> Loading classes...
+            </div>
+          ) : classes.length === 0 ? (
             <div className="empty-state">
               <p>You haven't joined any classes yet.</p>
               <Link to="/join-class" className="btn btn-small btn-primary">Join a Class</Link>

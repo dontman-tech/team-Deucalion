@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { useTeacher } from '../context/TeacherContext';
 import { useAuth } from '../context/AuthContext';
+import LoadingScreen from '../components/LoadingScreen';
 import './Dashboard.css';
 
 function TeacherDashboard() {
-  const { profile, classes, dashboardSummary, createClass, getClassStudents } = useTeacher();
+  const { profile, classes, dashboardSummary, isLoading, error, clearError, createClass, getClassStudents } = useTeacher();
   const { user } = useAuth();
   const [showCreateClass, setShowCreateClass] = useState(false);
   const [selectedClassId, setSelectedClassId] = useState(null);
   const [classStudents, setClassStudents] = useState([]);
+
+  if (isLoading && !profile) {
+    return <LoadingScreen message="Loading teacher dashboard..." />;
+  }
 
   const isApproved = profile?.is_approved;
   const isPending = profile?.approval_status === 'pending';
@@ -17,17 +22,24 @@ function TeacherDashboard() {
     setSelectedClassId(classId);
     const result = await getClassStudents(classId);
     if (result.success) {
-      setClassStudents(result.data);
+      setClassStudents(result.data || []);
     }
   };
 
   return (
     <div className="dashboard">
+      {error && (
+        <div className="error-banner" onClick={clearError}>
+          <span>⚠️ {error}</span>
+          <button className="dismiss-btn">×</button>
+        </div>
+      )}
+
       <div className="dashboard-header">
         <div className="welcome-section">
           <h1>Welcome, {user?.full_name || 'Teacher'}!</h1>
           <p className="subtitle">
-            {profile?.school_name} • {profile?.school_region}
+            {profile?.school_name || 'No school assigned'} • {profile?.school_region || 'N/A'}
           </p>
         </div>
         <div className="status-badge">

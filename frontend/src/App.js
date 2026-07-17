@@ -5,7 +5,6 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { StudentProvider } from './context/StudentContext';
 import { TeacherProvider } from './context/TeacherContext';
 import { ParentProvider } from './context/ParentContext';
-import { ThemeProvider } from './context/ThemeContext';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -24,6 +23,8 @@ import AdminDashboard from './pages/AdminDashboard';
 // Components
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+import ErrorBoundary from './components/ErrorBoundary';
+import LoadingScreen from './components/LoadingScreen';
 
 import './App.css';
 
@@ -98,13 +99,13 @@ function AppRoutes() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
+      <ErrorBoundary>
         <AuthProvider>
           <Router>
             <AppRoutes />
           </Router>
         </AuthProvider>
-      </ThemeProvider>
+      </ErrorBoundary>
     </QueryClientProvider>
   );
 }

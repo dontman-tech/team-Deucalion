@@ -1,9 +1,8 @@
 /* Landing Page Styles */
 .landing-page {
   min-height: 100vh;
-  background: var(--bg-color);
-  color: var(--text-color);
-  transition: background 0.3s, color 0.3s;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #333;
 }
 
 /* Navbar */
@@ -16,8 +15,12 @@
   backdrop-filter: blur(10px);
 }
 
-[data-theme="dark"] .navbar {
-  background: rgba(45, 55, 72, 0.95);
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #667eea;
+  letter-spacing: 2px;
+  text-decoration: none;
 }
 
 .nav-left {
@@ -32,16 +35,8 @@
   align-items: center;
 }
 
-.logo {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #667eea;
-  letter-spacing: 2px;
-  text-decoration: none;
-}
-
 .nav-link {
-  color: var(--text-color);
+  color: #333;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s;
@@ -51,35 +46,17 @@
 
 .nav-link:hover {
   color: #667eea;
-  background: var(--hover-bg);
+  background: #f0f7ff;
 }
 
 .nav-link.admin-link {
-  background: var(--secondary-color);
+  background: #764ba2;
   color: white;
 }
 
 .nav-link.admin-link:hover {
-  background: var(--primary-dark);
+  background: #5a67d8;
   color: white;
-}
-
-/* Theme Toggle */
-.theme-toggle {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 50%;
-  transition: background 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.theme-toggle:hover {
-  background: var(--hover-bg);
 }
 
 /* Buttons */
@@ -107,10 +84,6 @@
   background: white;
   color: #667eea;
   border: 2px solid #667eea;
-}
-
-[data-theme="dark"] .btn-secondary {
-  background: var(--card-bg);
 }
 
 .btn-secondary:hover {
