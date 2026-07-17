@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useAuth, API_URL } from './AuthContext';
 
@@ -14,28 +14,12 @@ export function ParentProvider({ children }) {
   const [childLeaderboard, setChildLeaderboard] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const config = {
-    headers: { Authorization: `Bearer ${token}` }
-  };
-
-  useEffect(() => {
-    if (token) {
-      fetchDashboard();
-    }
-  }, [token]);
-
-  useEffect(() => {
-    if (activeChildId && token) {
-      fetchChildDashboard(activeChildId);
-      fetchChildProgress(activeChildId);
-      fetchChildAssignments(activeChildId);
-      fetchChildLeaderboard(activeChildId);
-    }
-  }, [activeChildId, token]);
-
-  const fetchDashboard = async () => {
+  const fetchDashboard = useCallback(async () => {
+    if (!token) return;
     try {
-      const response = await axios.get(`${API_URL}/parents/dashboard`, config);
+      const response = await axios.get(`${API_URL}/parents/dashboard`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setDashboard(response.data);
       
       // Set first child as active if none selected
@@ -45,46 +29,71 @@ export function ParentProvider({ children }) {
     } catch (error) {
       console.error('Failed to fetch dashboard:', error);
     }
-  };
+  }, [token, activeChildId]);
 
-  const fetchChildDashboard = async (childId) => {
+  const fetchChildDashboard = useCallback(async (childId) => {
+    if (!token || !childId) return;
     try {
-      const response = await axios.get(`${API_URL}/parents/children/${childId}/dashboard`, config);
+      const response = await axios.get(`${API_URL}/parents/children/${childId}/dashboard`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setChildDashboard(response.data);
     } catch (error) {
       console.error('Failed to fetch child dashboard:', error);
     }
-  };
+  }, [token]);
 
-  const fetchChildProgress = async (childId) => {
+  const fetchChildProgress = useCallback(async (childId) => {
+    if (!token || !childId) return;
     try {
-      const response = await axios.get(`${API_URL}/parents/children/${childId}/progress`, config);
+      const response = await axios.get(`${API_URL}/parents/children/${childId}/progress`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setChildProgress(response.data);
     } catch (error) {
       console.error('Failed to fetch child progress:', error);
     }
-  };
+  }, [token]);
 
-  const fetchChildAssignments = async (childId) => {
+  const fetchChildAssignments = useCallback(async (childId) => {
+    if (!token || !childId) return;
     try {
-      const response = await axios.get(`${API_URL}/parents/children/${childId}/assignments`, config);
+      const response = await axios.get(`${API_URL}/parents/children/${childId}/assignments`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setChildAssignments(response.data.assignments || []);
     } catch (error) {
       console.error('Failed to fetch child assignments:', error);
     }
-  };
+  }, [token]);
 
-  const fetchChildLeaderboard = async (childId) => {
+  const fetchChildLeaderboard = useCallback(async (childId) => {
+    if (!token || !childId) return;
     try {
       const response = await axios.get(
         `${API_URL}/parents/children/${childId}/leaderboard`,
-        config
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       setChildLeaderboard(response.data);
     } catch (error) {
       console.error('Failed to fetch child leaderboard:', error);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      fetchDashboard();
+    }
+  }, [token, fetchDashboard]);
+
+  useEffect(() => {
+    if (activeChildId && token) {
+      fetchChildDashboard(activeChildId);
+      fetchChildProgress(activeChildId);
+      fetchChildAssignments(activeChildId);
+      fetchChildLeaderboard(activeChildId);
+    }
+  }, [activeChildId, token, fetchChildDashboard, fetchChildProgress, fetchChildAssignments, fetchChildLeaderboard]);
 
   const addChild = async (childTrackingCode) => {
     setIsLoading(true);

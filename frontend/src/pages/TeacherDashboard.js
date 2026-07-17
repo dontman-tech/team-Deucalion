@@ -4,10 +4,9 @@ import { useAuth } from '../context/AuthContext';
 import './Dashboard.css';
 
 function TeacherDashboard() {
-  const { profile, classes, dashboardSummary, createClass, createAssignment, getClassStudents } = useTeacher();
+  const { profile, classes, dashboardSummary, createClass, getClassStudents } = useTeacher();
   const { user } = useAuth();
   const [showCreateClass, setShowCreateClass] = useState(false);
-  const [showCreateAssignment, setShowCreateAssignment] = useState(false);
   const [selectedClassId, setSelectedClassId] = useState(null);
   const [classStudents, setClassStudents] = useState([]);
 

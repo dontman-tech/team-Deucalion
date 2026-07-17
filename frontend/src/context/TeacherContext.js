@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useAuth, API_URL } from './AuthContext';
 
@@ -12,9 +12,53 @@ export function TeacherProvider({ children }) {
   const [dashboardSummary, setDashboardSummary] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const config = {
-    headers: { Authorization: `Bearer ${token}` }
-  };
+  const fetchProfile = useCallback(async () => {
+    if (!token) return;
+    try {
+      const response = await axios.get(`${API_URL}/teachers/profile`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setProfile(response.data);
+    } catch (error) {
+      console.error('Failed to fetch profile:', error);
+    }
+  }, [token]);
+
+  const fetchClasses = useCallback(async () => {
+    if (!token) return;
+    try {
+      const response = await axios.get(`${API_URL}/teachers/classes`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setClasses(response.data);
+    } catch (error) {
+      console.error('Failed to fetch classes:', error);
+    }
+  }, [token]);
+
+  const fetchAssignments = useCallback(async () => {
+    if (!token) return;
+    try {
+      const response = await axios.get(`${API_URL}/teachers/assignments`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setAssignments(response.data);
+    } catch (error) {
+      console.error('Failed to fetch assignments:', error);
+    }
+  }, [token]);
+
+  const fetchDashboardSummary = useCallback(async () => {
+    if (!token) return;
+    try {
+      const response = await axios.get(`${API_URL}/teachers/dashboard/summary`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setDashboardSummary(response.data);
+    } catch (error) {
+      console.error('Failed to fetch dashboard:', error);
+    }
+  }, [token]);
 
   useEffect(() => {
     if (token) {
@@ -23,43 +67,7 @@ export function TeacherProvider({ children }) {
       fetchAssignments();
       fetchDashboardSummary();
     }
-  }, [token]);
-
-  const fetchProfile = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/teachers/profile`, config);
-      setProfile(response.data);
-    } catch (error) {
-      console.error('Failed to fetch profile:', error);
-    }
-  };
-
-  const fetchClasses = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/teachers/classes`, config);
-      setClasses(response.data);
-    } catch (error) {
-      console.error('Failed to fetch classes:', error);
-    }
-  };
-
-  const fetchAssignments = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/teachers/assignments`, config);
-      setAssignments(response.data);
-    } catch (error) {
-      console.error('Failed to fetch assignments:', error);
-    }
-  };
-
-  const fetchDashboardSummary = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/teachers/dashboard/summary`, config);
-      setDashboardSummary(response.data);
-    } catch (error) {
-      console.error('Failed to fetch dashboard:', error);
-    }
-  };
+  }, [token, fetchProfile, fetchClasses, fetchAssignments, fetchDashboardSummary]);
 
   const createClass = async (classData) => {
     setIsLoading(true);

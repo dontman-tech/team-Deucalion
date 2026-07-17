@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth, API_URL } from '../context/AuthContext';
 import './AIChatPage.css';
@@ -20,7 +20,6 @@ const SUBJECTS = [
 
 function AIChatPage() {
   const { token } = useAuth();
-  const navigate = useNavigate();
   const messagesEndRef = useRef(null);
   
   const [sessionId, setSessionId] = useState(null);

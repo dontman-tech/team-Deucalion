@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import './Dashboard.css';
 
 function ParentDashboard() {
-  const { dashboard, activeChildId, childDashboard, childProgress, childAssignments, selectChild, addChild } = useParent();
+  const { dashboard, activeChildId, childDashboard, selectChild, addChild } = useParent();
   const { user } = useAuth();
   const [showAddChild, setShowAddChild] = useState(false);
   const [newChildCode, setNewChildCode] = useState('');

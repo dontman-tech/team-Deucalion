@@ -56,7 +56,7 @@ function StudentSignupPage() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/students/register`, formData);
+      await axios.post(`${API_URL}/students/register`, formData);
       navigate('/login', { state: { message: 'Registration successful! Please login.' } });
     } catch (err) {
       setError(err.response?.data?.detail || 'Registration failed. Please try again.');

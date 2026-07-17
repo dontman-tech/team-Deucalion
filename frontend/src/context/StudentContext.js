@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useAuth, API_URL } from './AuthContext';
 
@@ -11,9 +11,41 @@ export function StudentProvider({ children }) {
   const [leaderboardSummary, setLeaderboardSummary] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const config = {
-    headers: { Authorization: `Bearer ${token}` }
-  };
+  const fetchProfile = useCallback(async () => {
+    if (!token) return;
+    try {
+      const response = await axios.get(`${API_URL}/students/profile`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setProfile(response.data);
+    } catch (error) {
+      console.error('Failed to fetch profile:', error);
+    }
+  }, [token]);
+
+  const fetchClasses = useCallback(async () => {
+    if (!token) return;
+    try {
+      const response = await axios.get(`${API_URL}/students/classes`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setClasses(response.data);
+    } catch (error) {
+      console.error('Failed to fetch classes:', error);
+    }
+  }, [token]);
+
+  const fetchLeaderboardSummary = useCallback(async () => {
+    if (!token) return;
+    try {
+      const response = await axios.get(`${API_URL}/students/leaderboard/summary`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setLeaderboardSummary(response.data);
+    } catch (error) {
+      console.error('Failed to fetch leaderboard:', error);
+    }
+  }, [token]);
 
   useEffect(() => {
     if (token) {
@@ -21,34 +53,7 @@ export function StudentProvider({ children }) {
       fetchClasses();
       fetchLeaderboardSummary();
     }
-  }, [token]);
-
-  const fetchProfile = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/students/profile`, config);
-      setProfile(response.data);
-    } catch (error) {
-      console.error('Failed to fetch profile:', error);
-    }
-  };
-
-  const fetchClasses = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/students/classes`, config);
-      setClasses(response.data);
-    } catch (error) {
-      console.error('Failed to fetch classes:', error);
-    }
-  };
-
-  const fetchLeaderboardSummary = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/students/leaderboard/summary`, config);
-      setLeaderboardSummary(response.data);
-    } catch (error) {
-      console.error('Failed to fetch leaderboard:', error);
-    }
-  };
+  }, [token, fetchProfile, fetchClasses, fetchLeaderboardSummary]);
 
   const joinClass = async (classCode) => {
     setIsLoading(true);

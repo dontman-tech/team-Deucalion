@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/v1';
@@ -11,18 +11,10 @@ export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (token) {
-      validateToken();
-    } else {
-      setIsLoading(false);
-    }
-  }, [token]);
-
-  const validateToken = async () => {
+  const validateToken = useCallback(async (authToken) => {
     try {
       const response = await axios.get(`${API_URL}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${authToken}` }
       });
       setUser({
         ...response.data,
@@ -35,7 +27,15 @@ export function AuthProvider({ children }) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      validateToken(token);
+    } else {
+      setIsLoading(false);
+    }
+  }, [token, validateToken]);
 
   const login = async (username, password) => {
     try {
