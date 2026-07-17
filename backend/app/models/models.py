@@ -138,7 +138,7 @@ class Teacher(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = relationship("User", back_populates="teacher")
-    school = relationship("School", back_populates="teachers")
+    school = relationship("School", back_populates="teachers", foreign_keys=[school_id])
     classes = relationship("Class", back_populates="teacher")
     teacher_subjects = relationship("TeacherSubject", back_populates="teacher")
     assignments = relationship("Assignment", back_populates="teacher")
@@ -468,6 +468,5 @@ class School(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
-    # Relationships
+    # Relationships - use foreign_keys to specify which column to use
     teachers = relationship("Teacher", back_populates="school")
-    classes = relationship("Class", back_populates="school")
