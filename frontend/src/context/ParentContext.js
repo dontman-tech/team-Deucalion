@@ -101,7 +101,7 @@ export function ParentProvider({ children }) {
       const response = await axios.post(
         `${API_URL}/parents/children/add`,
         null,
-        { params: { child_tracking_code: childTrackingCode }, ...config }
+        { params: { child_tracking_code: childTrackingCode }, headers: { Authorization: `Bearer ${token}` } }
       );
       await fetchDashboard();
       return { success: true, data: response.data };

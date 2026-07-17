@@ -72,7 +72,11 @@ export function TeacherProvider({ children }) {
   const createClass = async (classData) => {
     setIsLoading(true);
     try {
-      const response = await axios.post(`${API_URL}/teachers/classes`, classData, config);
+      const response = await axios.post(
+        `${API_URL}/teachers/classes`,
+        classData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       await fetchClasses();
       return { success: true, data: response.data };
     } catch (error) {
@@ -87,7 +91,10 @@ export function TeacherProvider({ children }) {
 
   const getClassStudents = async (classId) => {
     try {
-      const response = await axios.get(`${API_URL}/teachers/classes/${classId}/students`, config);
+      const response = await axios.get(
+        `${API_URL}/teachers/classes/${classId}/students`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       return { success: true, data: response.data };
     } catch (error) {
       return {
@@ -100,7 +107,11 @@ export function TeacherProvider({ children }) {
   const createAssignment = async (assignmentData) => {
     setIsLoading(true);
     try {
-      const response = await axios.post(`${API_URL}/teachers/assignments`, assignmentData, config);
+      const response = await axios.post(
+        `${API_URL}/teachers/assignments`,
+        assignmentData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       await fetchAssignments();
       return { success: true, data: response.data };
     } catch (error) {
@@ -118,7 +129,7 @@ export function TeacherProvider({ children }) {
       await axios.post(
         `${API_URL}/teachers/students/${studentId}/flag`,
         null,
-        { params: { flag_type: flagType, reason }, ...config }
+        { params: { flag_type: flagType, reason }, headers: { Authorization: `Bearer ${token}` } }
       );
       return { success: true };
     } catch (error) {

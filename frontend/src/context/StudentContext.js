@@ -61,7 +61,7 @@ export function StudentProvider({ children }) {
       const response = await axios.post(
         `${API_URL}/students/join-class`,
         { class_code: classCode },
-        config
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       await fetchClasses();
       return { success: true, data: response.data };
@@ -77,7 +77,11 @@ export function StudentProvider({ children }) {
 
   const updatePreferences = async (preferences) => {
     try {
-      await axios.put(`${API_URL}/students/profile/preferences`, preferences, config);
+      await axios.put(
+        `${API_URL}/students/profile/preferences`,
+        preferences,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       await fetchProfile();
       return { success: true };
     } catch (error) {

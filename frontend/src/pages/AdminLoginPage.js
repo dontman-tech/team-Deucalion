@@ -24,7 +24,7 @@ function AdminLoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/admin/login`, formData);
+      await axios.post(`${API_URL}/admin/login`, formData);
       // Store admin session
       localStorage.setItem('admin_token', 'admin-session');
       localStorage.setItem('admin_username', formData.username);
