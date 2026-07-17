@@ -10,7 +10,7 @@ from app.models import (
     User, Student, AISession, AIMessage, Material,
     Class, LanguageStream, StudentEnrollment
 )
-from app.services.auth import get_current_student, get_current_user
+from app.services.auth import get_current_student, get_current_user, get_current_teacher
 from app.services.lumina import LuminaService
 from app.services.deepseek import get_deepseek_service
 from app.services.leaderboard import LeaderboardService
