@@ -6,6 +6,7 @@ from app.services.auth import (
 )
 from app.services.leaderboard import LeaderboardService
 from app.services.lumina import LuminaService
+from app.services.deepseek import DeepSeekService, get_deepseek_service
 
 __all__ = [
     "verify_password", "get_password_hash", "create_access_token",
@@ -13,5 +14,7 @@ __all__ = [
     "require_user_type", "get_current_student", "get_current_teacher",
     "get_current_parent", "get_current_admin",
     "LeaderboardService",
-    "LuminaService"
+    "LuminaService",
+    "DeepSeekService",
+    "get_deepseek_service"
 ]
