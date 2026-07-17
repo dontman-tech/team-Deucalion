@@ -126,10 +126,9 @@ class Teacher(Base):
 
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = Column(String, ForeignKey('users.id'), unique=True)
-    employee_id = Column(String, nullable=True)
-    gce_board_id = Column(String, nullable=True)
     school_name = Column(String, nullable=False)
     school_region = Column(String, nullable=False)
+    school_id = Column(String, ForeignKey('schools.id'), nullable=True)  # Link to School
     language_stream = Column(Enum(LanguageStream), nullable=False)
     approval_status = Column(Enum(TeacherApprovalStatus), default=TeacherApprovalStatus.PENDING)
     approval_admin_id = Column(String, nullable=True)
@@ -139,6 +138,7 @@ class Teacher(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = relationship("User", back_populates="teacher")
+    school = relationship("School", back_populates="teachers")
     classes = relationship("Class", back_populates="teacher")
     teacher_subjects = relationship("TeacherSubject", back_populates="teacher")
     assignments = relationship("Assignment", back_populates="teacher")
@@ -451,3 +451,23 @@ FRANCOPHONE_BAC_SUBJECTS = {
     "D": ["Sciences de la Vie et de la Terre", "Mathematiques", "Physique-Chimie", "Francais", "Philosophie"],
     "E": ["Mathematiques", "Sciences Industrielles", "Physique", "Technologie"]
 }
+
+
+class School(Base):
+    """School model for managing schools on the platform."""
+    __tablename__ = "schools"
+    
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    name = Column(String, nullable=False, unique=True)
+    region = Column(String, nullable=False)
+    language_stream = Column(String, nullable=False, default="anglophone")  # Store as string
+    address = Column(String, nullable=True)
+    contact_email = Column(String, nullable=True)
+    contact_phone = Column(String, nullable=True)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    teachers = relationship("Teacher", back_populates="school")
+    classes = relationship("Class", back_populates="school")

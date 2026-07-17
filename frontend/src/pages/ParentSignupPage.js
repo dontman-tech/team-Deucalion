@@ -71,21 +71,21 @@ function ParentSignupPage() {
           </div>
 
           <div className="form-section">
-            <h3>Link Your Child</h3>
-            <p className="section-note">Enter your child's Child Tracking Code (CTC) to link their account.</p>
+            <h3>Link Your Child (Optional)</h3>
+            <p className="section-note">Enter your child's Child Tracking Code (CTC) to link their account now, or add them later.</p>
             <div className="form-group">
-              <label>Child Tracking Code *</label>
+              <label>Child Tracking Code</label>
               <input
                 type="text"
                 name="child_tracking_code"
                 value={formData.child_tracking_code}
                 onChange={handleChange}
-                placeholder="CTC-XXXXXX"
-                required
+                placeholder="CTC-XXXXXX (optional)"
               />
             </div>
             <p className="help-text">
               Get this code from your child's profile or ask their teacher.
+              You can add children after creating your account.
               Maximum 2 parent accounts can be linked per child.
             </p>
           </div>

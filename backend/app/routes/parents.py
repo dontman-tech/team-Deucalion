@@ -11,7 +11,7 @@ from app.models import (
     Class, AISession, AssignmentSubmission, QuizAttempt,
     LeaderboardEntry, LanguageStream
 )
-from app.services.auth import get_current_parent, get_current_user
+from app.services.auth import get_current_parent, get_current_user, get_password_hash
 from app.services.leaderboard import LeaderboardService
 from app.config import settings
 
@@ -24,7 +24,7 @@ class ParentSignup(BaseModel):
     phone: str
     email: str
     password: str = Field(..., min_length=8)
-    child_tracking_code: str = Field(..., description="Child Tracking Code to link")
+    child_tracking_code: Optional[str] = Field(None, description="Child Tracking Code to link (optional)")
 
 
 class ChildCardResponse(BaseModel):
@@ -67,7 +67,7 @@ async def register_parent(
     data: ParentSignup,
     db: Session = Depends(get_db)
 ):
-    """Register a new parent account with Child Tracking Code."""
+    """Register a new parent account. Child Tracking Code is optional."""
     
     # Check if email already exists
     existing_user = db.query(User).filter(User.email == data.email).first()
@@ -75,37 +75,6 @@ async def register_parent(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email already registered"
-        )
-    
-    # Validate Child Tracking Code
-    student = db.query(Student).filter(
-        Student.child_tracking_code == data.child_tracking_code
-    ).first()
-    
-    if not student:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Invalid Child Tracking Code. Please check and try again."
-        )
-    
-    # Check if maximum parents already linked
-    existing_parents = db.query(Parent).join(User).join(
-        Parent.children
-    ).filter(Student.id == student.id).all()
-    
-    # Alternative: count parents through the association
-    from app.models import parent_student_links
-    from sqlalchemy import func
-    
-    parent_count = db.query(func.count(parent_student_links.c.parent_id)).filter(
-        parent_student_links.c.student_id == student.id
-    ).scalar()
-    
-    if parent_count >= settings.MAX_PARENTS_PER_STUDENT:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="This student account already has the maximum number of parent accounts linked. "
-                   "Please contact the school administrator if you believe this is an error."
         )
     
     # Create user
@@ -127,15 +96,48 @@ async def register_parent(
     )
     db.add(parent)
     
-    # Link to child
-    parent.children.append(student)
+    linked_children = []
+    
+    # Link to child if CTC provided
+    if data.child_tracking_code:
+        student = db.query(Student).filter(
+            Student.child_tracking_code == data.child_tracking_code
+        ).first()
+        
+        if not student:
+            # Rollback user creation
+            db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Invalid Child Tracking Code. Please check and try again."
+            )
+        
+        # Check if maximum parents already linked
+        from app.models import parent_student_links
+        from sqlalchemy import func
+        
+        parent_count = db.query(func.count(parent_student_links.c.parent_id)).filter(
+            parent_student_links.c.student_id == student.id
+        ).scalar()
+        
+        if parent_count >= settings.MAX_PARENTS_PER_STUDENT:
+            db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="This student account already has the maximum number of parent accounts linked. "
+                       "Please contact the school administrator if you believe this is an error."
+            )
+        
+        # Link to child
+        parent.children.append(student)
+        linked_children.append(student.child_tracking_code)
     
     db.commit()
     
     return {
         "message": "Parent account created successfully",
         "parent_id": parent.id,
-        "linked_children": [student.child_tracking_code]
+        "linked_children": linked_children
     }
 
 

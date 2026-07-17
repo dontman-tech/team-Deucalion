@@ -75,6 +75,9 @@ function LoginPage() {
             <Link to="/signup/teacher">Teacher</Link>
             <Link to="/signup/parent">Parent</Link>
           </div>
+          <div className="admin-link">
+            <Link to="/admin/login">Admin Portal</Link>
+          </div>
         </div>
       </div>
     </div>

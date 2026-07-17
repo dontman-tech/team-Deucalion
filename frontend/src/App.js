@@ -17,6 +17,8 @@ import TeacherDashboard from './pages/TeacherDashboard';
 import ParentDashboard from './pages/ParentDashboard';
 import AIChatPage from './pages/AIChatPage';
 import JoinClassPage from './pages/JoinClassPage';
+import AdminLoginPage from './pages/AdminLoginPage';
+import AdminDashboard from './pages/AdminDashboard';
 
 // Components
 import Layout from './components/Layout';
@@ -45,6 +47,10 @@ function AppRoutes() {
       <Route path="/signup/student" element={<StudentSignupPage />} />
       <Route path="/signup/teacher" element={<TeacherSignupPage />} />
       <Route path="/signup/parent" element={<ParentSignupPage />} />
+      
+      {/* Admin Routes */}
+      <Route path="/admin/login" element={<AdminLoginPage />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>

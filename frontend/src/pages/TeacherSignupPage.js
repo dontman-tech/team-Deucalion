@@ -23,8 +23,6 @@ function TeacherSignupPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     full_name: '',
-    employee_id: '',
-    gce_board_id: '',
     school_name: '',
     school_region: '',
     language_stream: 'anglophone',
@@ -109,32 +107,20 @@ function TeacherSignupPage() {
               <label>Full Name *</label>
               <input type="text" name="full_name" value={formData.full_name} onChange={handleChange} required />
             </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label>Employee ID</label>
-                <input type="text" name="employee_id" value={formData.employee_id} onChange={handleChange} />
-              </div>
-              <div className="form-group">
-                <label>GCE Board ID</label>
-                <input type="text" name="gce_board_id" value={formData.gce_board_id} onChange={handleChange} />
-              </div>
-            </div>
           </div>
 
           <div className="form-section">
             <h3>School Information</h3>
-            <div className="form-row">
-              <div className="form-group">
-                <label>School Name *</label>
-                <input type="text" name="school_name" value={formData.school_name} onChange={handleChange} required />
-              </div>
-              <div className="form-group">
-                <label>Region *</label>
-                <select name="school_region" value={formData.school_region} onChange={handleChange} required>
-                  <option value="">Select...</option>
-                  {CAMEROON_REGIONS.map(r => <option key={r} value={r}>{r}</option>)}
-                </select>
-              </div>
+            <div className="form-group">
+              <label>School Name *</label>
+              <input type="text" name="school_name" value={formData.school_name} onChange={handleChange} required />
+            </div>
+            <div className="form-group">
+              <label>Region *</label>
+              <select name="school_region" value={formData.school_region} onChange={handleChange} required>
+                <option value="">Select...</option>
+                {CAMEROON_REGIONS.map(r => <option key={r} value={r}>{r}</option>)}
+              </select>
             </div>
             <div className="form-group">
               <label>Language Stream *</label>
@@ -147,7 +133,7 @@ function TeacherSignupPage() {
 
           <div className="form-section">
             <h3>Subjects Taught *</h3>
-            <div className="checkbox-grid">
+            <div className="checkbox-list">
               {subjects.map(subject => (
                 <label key={subject} className="checkbox-label">
                   <input
@@ -163,7 +149,7 @@ function TeacherSignupPage() {
 
           <div className="form-section">
             <h3>Class Levels Taught *</h3>
-            <div className="checkbox-grid">
+            <div className="checkbox-list">
               {classLevels.map(level => (
                 <label key={level} className="checkbox-label">
                   <input
@@ -179,15 +165,13 @@ function TeacherSignupPage() {
 
           <div className="form-section">
             <h3>Account Details</h3>
-            <div className="form-row">
-              <div className="form-group">
-                <label>Email *</label>
-                <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-              </div>
-              <div className="form-group">
-                <label>Phone *</label>
-                <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required />
-              </div>
+            <div className="form-group">
+              <label>Email *</label>
+              <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+            </div>
+            <div className="form-group">
+              <label>Phone *</label>
+              <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required />
             </div>
             <div className="form-group">
               <label>Password *</label>

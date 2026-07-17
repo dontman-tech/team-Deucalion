@@ -10,7 +10,8 @@ from app.routes import (
     students_router, 
     teachers_router, 
     parents_router,
-    ai_router
+    ai_router,
+    admin_router
 )
 
 # Create database tables
@@ -44,6 +45,7 @@ app.include_router(students_router, prefix=settings.API_PREFIX)
 app.include_router(teachers_router, prefix=settings.API_PREFIX)
 app.include_router(parents_router, prefix=settings.API_PREFIX)
 app.include_router(ai_router, prefix=settings.API_PREFIX)
+app.include_router(admin_router, prefix=settings.API_PREFIX)
 
 
 @app.get("/")

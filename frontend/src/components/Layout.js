@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Layout.css';
@@ -7,10 +7,18 @@ function Layout() {
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const [language, setLanguage] = useState('en');
 
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  const handleLanguageChange = (e) => {
+    setLanguage(e.target.value);
+    // In a real app, this would update the app's language context
+    // For now, it just stores the preference
+    localStorage.setItem('preferred_language', e.target.value);
   };
 
   const getNavItems = () => {
@@ -48,6 +56,18 @@ function Layout() {
         </button>
       </aside>
       <main className="main-content">
+        <header className="top-header">
+          <div className="header-right">
+            <select 
+              value={language} 
+              onChange={handleLanguageChange}
+              className="language-select"
+            >
+              <option value="en">🇬🇧 English</option>
+              <option value="fr">🇫🇷 Français</option>
+            </select>
+          </div>
+        </header>
         <Outlet />
       </main>
     </div>

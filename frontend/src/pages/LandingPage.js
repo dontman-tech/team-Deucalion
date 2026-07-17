@@ -182,6 +182,7 @@ function LandingPage() {
             <Link to="/signup/teacher">Teacher Sign Up</Link>
             <Link to="/signup/parent">Parent Sign Up</Link>
             <Link to="/login">Login</Link>
+            <Link to="/admin/login">Admin Portal</Link>
           </div>
           <div className="footer-links">
             <h4>Resources</h4>
