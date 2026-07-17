@@ -138,7 +138,7 @@ class Teacher(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = relationship("User", back_populates="teacher")
-    school = relationship("School", back_populates="teachers", foreign_keys=[school_id])
+    school = relationship("School", foreign_keys=[school_id])
     classes = relationship("Class", back_populates="teacher")
     teacher_subjects = relationship("TeacherSubject", back_populates="teacher")
     assignments = relationship("Assignment", back_populates="teacher")
@@ -454,19 +454,21 @@ FRANCOPHONE_BAC_SUBJECTS = {
 
 
 class School(Base):
-    """School model for managing schools on the platform."""
+    """School model for managing schools on the platform.
+    
+    Note: School connects to Teacher via school_id foreign key on Teacher.
+    Do NOT add direct relationships to Class or other models without proper FK.
+    """
     __tablename__ = "schools"
     
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     name = Column(String, nullable=False, unique=True)
     region = Column(String, nullable=False)
-    language_stream = Column(String, nullable=False, default="anglophone")  # Store as string
+    language_stream = Column(String, nullable=False, default="anglophone")
     address = Column(String, nullable=True)
     contact_email = Column(String, nullable=True)
     contact_phone = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
-    # Relationships - use foreign_keys to specify which column to use
-    teachers = relationship("Teacher", back_populates="school")
+    # NOTE: No relationships defined here. Use Teacher.school_id to link teachers to schools.
