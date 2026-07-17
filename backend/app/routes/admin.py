@@ -8,7 +8,7 @@ import uuid
 from app.database import get_db
 from app.models import (
     User, Student, Teacher, Parent, Class, UserType,
-    LanguageStream, School
+    LanguageStream, School, TeacherApprovalStatus
 )
 from app.services.auth import get_password_hash
 from app.config import settings
@@ -87,7 +87,7 @@ async def list_schools(
             id=s.id,
             name=s.name,
             region=s.region,
-            language_stream=s.language_stream.value if s.language_stream else "anglophone",
+            language_stream=s.language_stream or "anglophone",
             address=s.address,
             contact_email=s.contact_email,
             contact_phone=s.contact_phone,
@@ -116,7 +116,7 @@ async def create_school(
         id=str(uuid.uuid4()),
         name=data.name,
         region=data.region,
-        language_stream=LanguageStream(data.language_stream),
+        language_stream=data.language_stream,
         address=data.address,
         contact_email=data.contact_email,
         contact_phone=data.contact_phone,
@@ -130,7 +130,7 @@ async def create_school(
         id=school.id,
         name=school.name,
         region=school.region,
-        language_stream=school.language_stream.value if school.language_stream else "anglophone",
+        language_stream=school.language_stream or "anglophone",
         address=school.address,
         contact_email=school.contact_email,
         contact_phone=school.contact_phone,
@@ -275,8 +275,8 @@ async def get_platform_stats(
     total_teachers = db.query(Teacher).count()
     total_parents = db.query(Parent).count()
     total_schools = db.query(School).count()
-    approved_teachers = db.query(Teacher).filter(Teacher.is_approved == True).count()
-    pending_teachers = db.query(Teacher).filter(Teacher.approval_status == "pending").count()
+    approved_teachers = db.query(Teacher).filter(Teacher.approval_status == TeacherApprovalStatus.APPROVED).count()
+    pending_teachers = db.query(Teacher).filter(Teacher.approval_status == TeacherApprovalStatus.PENDING).count()
     
     return {
         "total_students": total_students,
