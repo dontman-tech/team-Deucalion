@@ -299,7 +299,7 @@ class AssignmentSubmission(Base):
     file_path = Column(String, nullable=True)
     score = Column(Integer, nullable=True)
     feedback = Column(Text, nullable=True)
-    graded_by_teacher_id = Column(String, Foreign=True('teachers.id'), nullable=True)
+    graded_by_teacher_id = Column(String, ForeignKey('teachers.id'), nullable=True)
     submitted_at = Column(DateTime, default=datetime.utcnow)
     graded_at = Column(DateTime, nullable=True)
 
