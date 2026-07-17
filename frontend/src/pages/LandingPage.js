@@ -1,17 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 import './LandingPage.css';
 
 function LandingPage() {
+  const { isDarkMode, toggleTheme } = useTheme();
+
   return (
     <div className="landing-page">
       {/* Hero Section */}
       <header className="hero">
         <nav className="navbar">
-          <div className="logo">LUMINA CAMEROON</div>
-          <div className="nav-links">
+          <div className="nav-left">
+            <div className="logo">LUMINA CAMEROON</div>
+          </div>
+          <div className="nav-right">
+            <button onClick={toggleTheme} className="theme-toggle" title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
+              {isDarkMode ? '☀️' : '🌙'}
+            </button>
             <Link to="/login" className="nav-link">Login</Link>
             <Link to="/signup/student" className="nav-link btn-primary">Get Started</Link>
+            <Link to="/admin/login" className="nav-link admin-link">Admin</Link>
           </div>
         </nav>
         

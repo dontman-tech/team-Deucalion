@@ -5,6 +5,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { StudentProvider } from './context/StudentContext';
 import { TeacherProvider } from './context/TeacherContext';
 import { ParentProvider } from './context/ParentContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -97,11 +98,13 @@ function AppRoutes() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Router>
-          <AppRoutes />
-        </Router>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router>
+            <AppRoutes />
+          </Router>
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

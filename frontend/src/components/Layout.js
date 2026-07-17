@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import './Layout.css';
 
 function Layout() {
   const { user, logout } = useAuth();
+  const { isDarkMode, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const [language, setLanguage] = useState('en');
@@ -16,8 +18,6 @@ function Layout() {
 
   const handleLanguageChange = (e) => {
     setLanguage(e.target.value);
-    // In a real app, this would update the app's language context
-    // For now, it just stores the preference
     localStorage.setItem('preferred_language', e.target.value);
   };
 
@@ -58,13 +58,16 @@ function Layout() {
       <main className="main-content">
         <header className="top-header">
           <div className="header-right">
+            <button onClick={toggleTheme} className="theme-toggle" title={isDarkMode ? 'Light Mode' : 'Dark Mode'}>
+              {isDarkMode ? '☀️' : '🌙'}
+            </button>
             <select 
               value={language} 
               onChange={handleLanguageChange}
               className="language-select"
             >
-              <option value="en">🇬🇧 English</option>
-              <option value="fr">🇫🇷 Français</option>
+              <option value="en">🇬🇧 EN</option>
+              <option value="fr">🇫🇷 FR</option>
             </select>
           </div>
         </header>
