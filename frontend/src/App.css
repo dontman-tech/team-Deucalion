@@ -1,0 +1,393 @@
+/* Global App Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #f8f9fa;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* Dashboard Extensions */
+.info-card {
+  background: #f0f7ff;
+  border-left: 4px solid #667eea;
+}
+
+.warning-card {
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+}
+
+.warning-card h2 {
+  color: #b45309;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.stat {
+  text-align: center;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.status-badge {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.badge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.badge.pending {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.badge.approved {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.class-code {
+  display: inline-block;
+  background: #f0f7ff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  color: #667eea;
+}
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.students-table th,
+.students-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.students-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #666;
+}
+
+.students-table code {
+  background: #f0f7ff;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+/* Children Cards */
+.children-cards {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.child-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: white;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s;
+  min-width: 200px;
+}
+
+.child-card:hover {
+  border-color: #e0e0e0;
+}
+
+.child-card.active {
+  border-color: #667eea;
+  background: #f0f7ff;
+}
+
+.child-avatar {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.child-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.child-info p {
+  margin: 0.25rem 0;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.child-info .status {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
+}
+
+.child-info .status.active {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.child-info .status.inactive {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.add-child-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  background: #f8f9fa;
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  cursor: pointer;
+  min-width: 150px;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.add-child-card:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.add-icon {
+  font-size: 2rem;
+  font-weight: 300;
+}
+
+/* Progress Extensions */
+.progress-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.assignment-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.subject-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.subject-name {
+  width: 120px;
+  font-weight: 500;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.3s;
+}
+
+.progress-fill.excellent { background: #16a34a; }
+.progress-fill.good { background: #667eea; }
+.progress-fill.average { background: #f59e0b; }
+.progress-fill.needs_improvement { background: #dc2626; }
+
+.subject-percentage {
+  width: 45px;
+  text-align: right;
+  font-weight: 600;
+}
+
+.ai-summary {
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.recommendation {
+  background: #f0f7ff;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.recommendation strong {
+  color: #667eea;
+}
+
+.deadlines-list {
+  list-style: none;
+}
+
+.deadlines-list li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.deadlines-list li:last-child {
+  border-bottom: none;
+}
+
+.deadlines-list strong {
+  display: block;
+  color: #333;
+}
+
+.deadlines-list span {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.modal .form-group {
+  margin-bottom: 1rem;
+}
+
+.modal .form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.modal .form-group input,
+.modal .form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.modal .form-group input:focus,
+.modal .form-group select:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #5568d3;
+}
+
+.btn-small {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+}
