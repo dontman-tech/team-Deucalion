@@ -1,0 +1,494 @@
+/* Admin Dashboard Styles */
+.admin-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+/* Sidebar */
+.admin-sidebar {
+  width: 280px;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 0;
+  position: fixed;
+  height: 100vh;
+}
+
+.admin-logo {
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-align: center;
+  padding: 0 1.5rem 2rem;
+  letter-spacing: 2px;
+  color: #667eea;
+}
+
+.admin-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0 1rem;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.3s;
+  text-align: left;
+  width: 100%;
+}
+
+.admin-nav-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.admin-nav-item.active {
+  background: #667eea;
+  color: white;
+}
+
+.admin-nav-item .badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.admin-nav-item .badge.warning {
+  background: #f6ad55;
+  color: #1a1a2e;
+}
+
+.admin-logout {
+  margin: 1rem;
+  padding: 0.75rem;
+  background: rgba(220, 53, 69, 0.2);
+  border: 1px solid rgba(220, 53, 69, 0.4);
+  color: #fc8181;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.admin-logout:hover {
+  background: rgba(220, 53, 69, 0.4);
+}
+
+/* Main Content */
+.admin-content {
+  flex: 1;
+  margin-left: 280px;
+  padding: 2rem;
+}
+
+.admin-header {
+  margin-bottom: 2rem;
+}
+
+.admin-header h1 {
+  font-size: 1.8rem;
+  color: #1a1a2e;
+  margin-bottom: 0.25rem;
+}
+
+.admin-header p {
+  color: #666;
+}
+
+/* Admin Alert */
+.admin-alert {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.admin-alert.error {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.admin-alert.success {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.admin-alert:hover {
+  opacity: 0.9;
+}
+
+/* Admin Section */
+.admin-section {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.admin-section h2 {
+  font-size: 1.3rem;
+  color: #1a1a2e;
+  margin-bottom: 1.5rem;
+}
+
+.section-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.section-actions h2 {
+  margin-bottom: 0;
+}
+
+/* Stats Grid */
+.admin-section .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-section .stat-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.admin-section .stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.admin-section .stat-card.approved {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.admin-section .stat-card.approved h3 {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.admin-section .stat-card.pending {
+  background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
+  color: white;
+}
+
+.admin-section .stat-card.pending h3 {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.admin-section .stat-icon {
+  font-size: 2rem;
+}
+
+.admin-section .stat-info h3 {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.admin-section .stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.admin-section .stat-card.approved .stat-value,
+.admin-section .stat-card.pending .stat-value {
+  color: white;
+}
+
+/* Quick Actions */
+.quick-actions {
+  background: #fef3c7;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.quick-actions h3 {
+  color: #92400e;
+  margin-bottom: 0.5rem;
+}
+
+.quick-actions p {
+  color: #a16207;
+  margin-bottom: 1rem;
+}
+
+/* Form Card */
+.form-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-card h3 {
+  font-size: 1.1rem;
+  color: #1a1a2e;
+  margin-bottom: 1rem;
+}
+
+/* Data Table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.data-table th {
+  background: #f8f9fa;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.data-table td {
+  padding: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.data-table tr:hover td {
+  background: #f8f9fa;
+}
+
+.stream-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.stream-badge.anglophone {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.stream-badge.francophone {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+}
+
+.empty-state.success {
+  background: #d1fae5;
+  border-radius: 12px;
+}
+
+/* Teachers Grid */
+.teachers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.teacher-card {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.teacher-card:hover {
+  border-color: #667eea;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+}
+
+.teacher-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.teacher-avatar {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.teacher-name {
+  flex: 1;
+}
+
+.teacher-name h4 {
+  font-size: 1.1rem;
+  color: #1a1a2e;
+  margin-bottom: 0.25rem;
+}
+
+.approval-badge {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.teacher-details {
+  margin-bottom: 1rem;
+}
+
+.teacher-details p {
+  margin-bottom: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.teacher-details strong {
+  color: #1a1a2e;
+}
+
+.teacher-subjects {
+  margin-bottom: 1rem;
+}
+
+.teacher-subjects strong {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.subject-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.subject-tag {
+  background: #e0e7ff;
+  color: #3730a3;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+.teacher-levels {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.teacher-levels strong {
+  color: #1a1a2e;
+}
+
+.teacher-card-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.btn-success {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-success:hover {
+  background: #059669;
+}
+
+.btn-full {
+  flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-dashboard {
+    flex-direction: column;
+  }
+  
+  .admin-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 1rem;
+  }
+  
+  .admin-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 0.5rem;
+    padding: 0;
+  }
+  
+  .admin-nav-item {
+    white-space: nowrap;
+    padding: 0.75rem 1rem;
+  }
+  
+  .admin-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+  
+  .teachers-grid {
+    grid-template-columns: 1fr;
+  }
+}

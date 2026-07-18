@@ -196,10 +196,10 @@ async def register_teacher(
         gce_board_id=teacher.gce_board_id,
         school_name=teacher.school_name,
         school_region=teacher.school_region,
-        language_stream=teacher.language_stream.value,
+        language_stream=str(teacher.language_stream),
         subjects=data.subjects,
         class_levels=data.class_levels,
-        approval_status=teacher.approval_status.value,
+        approval_status=str(teacher.approval_status.value),
         is_read_only=teacher.is_read_only,
         is_approved=False
     )
@@ -232,10 +232,10 @@ async def get_teacher_profile(
         gce_board_id=teacher.gce_board_id,
         school_name=teacher.school_name,
         school_region=teacher.school_region,
-        language_stream=teacher.language_stream.value,
+        language_stream=str(teacher.language_stream),
         subjects=subjects,
         class_levels=class_levels,
-        approval_status=teacher.approval_status.value,
+        approval_status=str(teacher.approval_status.value),
         is_read_only=teacher.is_read_only,
         is_approved=teacher.approval_status == TeacherApprovalStatus.APPROVED
     )

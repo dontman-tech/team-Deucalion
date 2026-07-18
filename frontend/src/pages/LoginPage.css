@@ -82,6 +82,16 @@
   font-size: 0.9rem;
 }
 
+.success-message {
+  background: #d1fae5;
+  color: #059669;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
 .btn-full {
   width: 100%;
   padding: 1rem;
